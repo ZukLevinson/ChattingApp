@@ -1,0 +1,25 @@
+services:
+  db:
+    container_name: db
+    ports:
+      - 5432:5432
+    build: db
+    env_file:
+      - .dev.env
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+
+  backend:
+    container_name: backend
+    ports:
+      - 5000:5000
+    build: backend
+
+  frontend:
+    container_name: frontend
+    ports:
+      - 80:3000
+    build: frontend
+
+volumes:
+  database-data:
