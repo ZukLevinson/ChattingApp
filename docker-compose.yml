@@ -12,7 +12,7 @@ services:
   backend:
     container_name: backend
     ports:
-      - 5000:5000
+      - 5000:8080
     build: backend
 
   frontend:
