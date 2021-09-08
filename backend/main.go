@@ -9,12 +9,17 @@ import (
 
 var addr = flag.String("addr", ":8080", "http service address")
 
-func serveAPI(w http.ResponseWriter, r *http.Request) {
+func serveAPI(w http.ResponseWriter, r *http.Request, hub *Hub) {
+	middleman := createMiddleman(hub, w, r)
+	middleman.hub.register <- middleman
+
 	switch strings.TrimLeft(r.URL.Path, "/api"){
 	case "/chatters":
-
+		go middleman.writingFromTheHubToWS()
+		go middleman.readingFromWSToHub()
+		
 	case "/messages":
-
+		
 	case "/groups":
 
 	default:
@@ -26,7 +31,12 @@ func serveAPI(w http.ResponseWriter, r *http.Request) {
 func main () {
 	flag.Parse()
 
-	http.HandleFunc("/api", serveAPI)
+	hub := createHub()
+	go hub.runHub()
+
+	http.HandleFunc("/api", func (w http.ResponseWriter, r *http.Request) {
+		serveAPI(w, r, hub)
+	})
 
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
