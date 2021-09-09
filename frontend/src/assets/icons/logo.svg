@@ -1,13 +1,15 @@
 <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <defs>
   <linearGradient y2="0" y1="1" x2="1" x1="0" id="sw-gradient">
-   <stop offset="0%" stop-color="rgba(51, 65, 149, 1)" id="stop1"/>
-   <stop offset="100%" stop-color="rgba(40, 40, 40, 1)" id="stop2"/>
+   <stop offset="0%" stop-color="rgba(40, 40, 40, 1)" id="stop1"/>
+   <stop offset="100%" stop-color="rgba(3, 131, 115, 1)" id="stop2"/>
   </linearGradient>
  </defs>
  <g>
   <title>Layer 1</title>
   <path id="svg_1" stroke="url(#sw-gradient)" stroke-width="0" height="100%" width="100%" d="m73.7,21.3c4.9,4.6 5.4,14.1 6,22.7c0.6,8.7 1.4,16.6 -1.3,23.5c-2.7,6.9 -8.9,12.9 -16.7,16.6c-7.8,3.6 -17.1,5 -23.7,1.5c-6.7,-3.5 -10.7,-11.9 -15.5,-19.9c-4.8,-8 -10.4,-15.7 -9.5,-22.4c1,-6.8 8.5,-12.5 15.8,-16.8c7.2,-4.2 14.2,-6.9 22.4,-8.3c8.2,-1.4 17.6,-1.6 22.5,3.1z" fill="url(#sw-gradient)"/>
-  <text transform="matrix(1 0 0 1 0 0)" style="cursor: move;" font-style="normal" font-weight="normal" xml:space="preserve" text-anchor="start" font-family="'Quicksand'" font-size="26" id="svg_2" y="59.80085" x="41.51358" stroke-width="0" stroke="#000" fill="#ffffff">C</text>
+  <ellipse stroke-width="0" ry="3.86076" rx="3.60759" id="svg_3" cy="37.46835" cx="44.3038" stroke="#000" fill="#ffffff"/>
+  <ellipse stroke-width="0" ry="3.86076" rx="3.60759" id="svg_4" cy="52.40506" cx="64.43038" stroke="#000" fill="#ffffff"/>
+  <ellipse stroke-width="0" ry="3.86076" rx="3.60759" id="svg_5" cy="61.89873" cx="40.75949" stroke="#000" fill="#ffffff"/>
  </g>
 </svg>
