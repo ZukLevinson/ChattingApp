@@ -1,12 +1,10 @@
 .container {
-  width: 20%;
   height: 100%;
   position: relative;
   backdrop-filter: blur(20px);
   box-shadow: 0 0 2px var(--primary-color);
   border-radius: 2em;
   overflow: hidden;
-  margin-right: 2.25em;
 }
 
 .container::before {

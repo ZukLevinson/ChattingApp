@@ -3,6 +3,5 @@
   height: calc(100% - 4.5em);
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
   padding: 2.25em;
 }
