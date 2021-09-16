@@ -34,6 +34,7 @@ type Middleman struct {
 }
 
 func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) *Middleman {
+	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 	conn, err := upgrader.Upgrade(w, r, nil) // Upgrading http connection to WS
 
 	if err != nil {

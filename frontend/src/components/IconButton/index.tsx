@@ -16,7 +16,10 @@ export default function IconButton(props: Props) {
       className={styles.container}
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={props.onPress}
+      onClick={(e: any) => {
+        e.preventDefault();
+        if (props.onPress) props.onPress();
+      }}
     >
       <div className={styles["icon-container"]}>
         <div className={styles.icon}>
