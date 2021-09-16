@@ -21,6 +21,7 @@
 }
 
 .text {
+  text-decoration: none;
   flex: 1;
   text-align: left;
   display: flex;
