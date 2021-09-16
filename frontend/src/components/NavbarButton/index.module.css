@@ -1,0 +1,42 @@
+:root {
+  --main-padding-x: 0.6em;
+  --main-padding-y: 0.3em;
+}
+
+.container {
+  width: calc(100% - 2 * var(--main-padding-x));
+  height: calc(40px - 2 * var(--main-padding-y));
+  display: flex;
+  align-items: center;
+  background-color: none;
+  border-radius: 0.6em;
+  user-select: none;
+  padding: var(--main-padding-y) var(--main-padding-x);
+  margin: 0.3em 0;
+}
+
+.container:hover {
+  background-color: #3d4858;
+  cursor: pointer;
+}
+
+.text {
+  flex: 1;
+  text-align: left;
+  display: flex;
+  justify-content: flex-start;
+  font-weight: bold;
+  color: var(--primary-text-color);
+}
+
+.icon {
+  margin-right: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon > svg {
+  fill: var(--primary-text-color);
+}
+

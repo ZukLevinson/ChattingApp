@@ -1,0 +1,28 @@
+:root {
+  --main-padding: 1em;
+}
+
+.container {
+  display: flex;
+  height: calc(100% - 2*var(--main-padding));
+  width: calc(180px - 2*var(--main-padding));
+  align-items: center;
+  background-color: #161b22;
+  box-shadow: 0 5px 2px -2px rgba(0, 0, 0, 0.2);
+  justify-content: space-between;
+  flex-direction: column;
+  padding: var(--main-padding);
+}
+
+.buttons-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+}
+
+.logo {
+  margin: 1em;
+  user-select: none;
+  cursor: default; 
+}
