@@ -1,0 +1,4 @@
+.container {
+  height: 40px;
+  width: calc(fit-content + 1em);
+}
