@@ -64,7 +64,7 @@ func (m *Middleman) readingFromWSToHub() {
 
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Printf("WS -> Hub error: %v", err)
+				log.Printf("WS -> Hub(%v) error: %s", err, m.hub.name)
 			}
 			
 			break

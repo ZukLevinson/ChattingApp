@@ -19,11 +19,24 @@ func serveAPI(w http.ResponseWriter, r *http.Request, hub *Hub) {
 func main () {
 	flag.Parse()
 
-	hub := createHub()
-	go hub.runHub()
+	messageHub := createHub("Message")
+	statusHub := createHub("Status")
 
-	http.HandleFunc("/ws", func (w http.ResponseWriter, r *http.Request) {
-		serveAPI(w, r, hub)
+	go messageHub.runHub()
+	go statusHub.runHub()
+
+	http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+		log.Println("Request from ", r.URL.Path)
+
+		switch(r.URL.Path) {
+		case "/messages": 
+			serveAPI(w, r, messageHub)
+		case "/statuses": 
+			serveAPI(w, r, statusHub)
+		default:
+			log.Panic("No available routes")
+			w.WriteHeader(404)
+		}
 	})
 
 	err := http.ListenAndServe(*addr, nil)

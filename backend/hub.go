@@ -4,6 +4,7 @@ import "log"
 
 // The hub maintains the different channels while keeping records of the middlemans
 type Hub struct {
+	name string // Hub name
 	middlemans map[*Middleman]bool // Registered middlemans
 	broadcast chan []byte // Messages from  middlemans
 	register chan *Middleman // Register requests from middlemans
@@ -11,9 +12,10 @@ type Hub struct {
 }
 
 // Creates new Hub
-func createHub() *Hub {
+func createHub(name string) *Hub {
 	// Returns the pointer of the new Hub
 	return &Hub{
+		name: name,
 		broadcast: make(chan []byte),
 		register: make(chan *Middleman),
 		unregister: make(chan *Middleman),
