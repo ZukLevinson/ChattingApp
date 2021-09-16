@@ -1,10 +1,20 @@
+import { FunctionComponent } from "react";
 import styles from "./index.module.css";
 
-export default function NavbarButton() {
+interface Props {
+  title: string;
+  icon: FunctionComponent;
+}
+
+export default function NavbarButton(props: Props) {
   return (
-    <div className={styles.button}>
-      {/* <span class="material-icons-outlined">settings</span> */}
-      <span className={styles.text}>Chats</span>
+    <div className={styles.container}>
+      <div className={styles.icon}>
+        <props.icon />
+      </div>
+      <div className={styles.text}>
+        <span>{props.title}</span>
+      </div>
     </div>
   );
 }
