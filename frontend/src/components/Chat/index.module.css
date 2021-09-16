@@ -57,6 +57,10 @@
   height: 100%;
   width: calc(100% - var(--card-padding) * 2);
   padding: var(--card-padding);
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
 }
 
 .footer {

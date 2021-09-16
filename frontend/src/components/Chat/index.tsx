@@ -29,21 +29,22 @@ const tempOfflineUsers: UserProfileBadgeProps[] = [
     status: Status.offline,
   },
 ];
-const client = new W3CWebsocket(`ws://${process.env.REACT_APP_HOST}:8080/ws`);
+const client = new W3CWebsocket(
+  `ws://${process.env.REACT_APP_HOST}:8080/messages`
+);
 
 interface Props {}
 
 export default function Chat(props: Props) {
-  console.log(process.env);
   let [currentMessage, setCurrentMessage] = useState("");
-  let [messages, setMessages] = useState([
-    <Message text={"first message"} date={new Date()} />,
-  ]);
+  let [messages, setMessages] = useState([] as JSX.Element[]);
+  let [uniqueId, setUniqueId] = useState("" + Date.now());
 
   const sendMessage = () => {
     client.send(
       JSON.stringify({
         message: currentMessage,
+        sender: uniqueId,
       })
     );
 
@@ -56,9 +57,11 @@ export default function Chat(props: Props) {
     };
 
     client.onmessage = (incoming: any) => {
-      const { message } = JSON.parse(incoming.data);
+      const { message, sender } = JSON.parse(incoming.data);
 
-      messages.push(<Message text={message} date={new Date()} />);
+      messages.push(
+        <Message text={message} date={new Date()} isMe={uniqueId === sender} />
+      );
       const updatedMessages = [...messages];
 
       setMessages(updatedMessages);

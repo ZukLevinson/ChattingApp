@@ -10,49 +10,39 @@
   margin: 0.5em;
   color: var(--button-color);
   user-select: none;
-  width: 40px;
+  min-width: 40px;
+  background-color: var(--primary-message-color);
+  padding: 0.5em;
+  border-radius: 0.5em 0.5em 0.5em 0;
+  max-width: calc(100% - 2em);
 }
 
-.container:hover {
-  cursor: pointer;
-  color: var(--active-color);
+.text {
+  width: 100%;
+  margin-bottom: 0.3em;
+  overflow: hidden;
+  font-size: 1.1em;
 }
 
-.title {
+.text > span {
+  width: 100%;
+  max-width: 100%;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  user-select: text;
+}
+
+.date {
   font-size: 0.8em;
   font-weight: 700;
+}
+
+.sender {
+  font-size: 0.8em;
   text-transform: uppercase;
-  transition: font-size 600ms;
-}
-
-.icon-container {
-  background-color: var(--button-color);
-  width: var(--button-size);
-  height: var(--button-size);
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.3em;
-  box-shadow: 0 0 6px var(--primary-color);
-}
-
-.icon {
-  height: 80%;
-  width: 80%;
-}
-
-.icon > svg {
-  width: 100%;
-  height: 100%;
-  fill: var(--primary-text-color);
-  transition: 1s ease-in-out linear;
-}
-
-.container:hover .icon > svg {
-  fill: var(--primary-color);
-}
-
-.container:hover .icon-container {
-  background-color: var(--primary-text-color);
+  margin-bottom: 0.5em;
 }
