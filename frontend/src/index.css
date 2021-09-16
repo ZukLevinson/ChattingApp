@@ -30,3 +30,8 @@ body,
   background-color: var(--primary-background);
   color: var(--primary-text-color);
 }
+
+.MuiIcon-root {
+  fill: var(--primary-text-color);
+  color: var(--primary-text-color);
+}

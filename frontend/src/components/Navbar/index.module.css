@@ -1,67 +1,22 @@
+:root {
+  --main-padding: 1em;
+}
+
 .container {
   display: flex;
-  width: 100%;
-  height: 60px;
+  height: calc(100% - 2*var(--main-padding));
+  width: calc(180px - 2*var(--main-padding));
   align-items: center;
   background-color: #161b22;
   box-shadow: 0 5px 2px -2px rgba(0, 0, 0, 0.2);
-  justify-content: center;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: var(--main-padding);
 }
 
-.navbar {
-  display: flex;
-  width: 98%;
-  justify-content: flex-start;
-  height: 60%;
-}
-
-.menuButtonContainer {
-  display: flex;
-  width: 97%;
-}
-
-.menuButton {
-  display: flex;
-  width: 5%;
-  height: 100%;
-  color: #fff;
-}
-
-.menuButton :hover {
+.buttons-container {
   display: flex;
   width: 100%;
-  height: 100%;
-  border-radius: 50px;
-  background-color: #9287873f;
-}
-
-.loginButton :hover {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border-radius: 50px;
-  background-color: #9287873f;
-}
-
-.loginContainer {
-  display: flex;
-  width: 5%;
-  height: 100%;
-  color: #fff;
-}
-
-.loginButton {
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-
-.loginButtonText {
-  width: 100%;
-  height: 100%;
-  line-height: 200%; /* Making the text centered */
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
+  align-items: center;
+  flex-direction: column;
 }
