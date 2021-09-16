@@ -3,6 +3,9 @@ import UserProfileBadge, {
   Props as UserProfileBadgeProps,
   Status,
 } from "../UserProfileBadge";
+import IconButton from "../IconButton";
+import { ReactComponent as SendIcon } from "../../assets/icons/send_black_24dp.svg";
+import { useState } from "react";
 
 const tempOnlineUsers: UserProfileBadgeProps[] = [
   {
@@ -28,6 +31,12 @@ const tempOfflineUsers: UserProfileBadgeProps[] = [
 interface Props {}
 
 export default function Chat(props: Props) {
+  let [currentMessage, setCurrentMessage] = useState("");
+
+  const sendMessage = () => {
+    console.log(`Sending message '${currentMessage}'`);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -61,7 +70,13 @@ export default function Chat(props: Props) {
         <span>hi im the chat</span>
       </div>
       <div className={styles.footer}>
-        <span>hi im the footer</span>
+        <input
+          type="text"
+          value={currentMessage}
+          onChange={(e) => setCurrentMessage(e.target.value)}
+          placeholder="What's on your mind?"
+        />
+        <IconButton icon={SendIcon} text={"send"} onPress={sendMessage} />
       </div>
     </div>
   );
