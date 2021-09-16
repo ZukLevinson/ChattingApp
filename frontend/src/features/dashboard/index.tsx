@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar"
 
 export default function Dashboard() {
     return (
-        <div>
+        <div className={styles.container}>
             <Navbar />
             asldmasdmlasdlkaslm
         </div>
