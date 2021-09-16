@@ -1,9 +1,67 @@
 .container {
   flex: 1;
-  width: calc(100% - (var(--card-margin) + var(--card-padding)) * 2);
+  width: calc(100% - var(--card-margin) * 2);
   height: calc(100% - 4em);
   background-color: var(--secondary-background);
   margin: var(--card-margin);
   border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+  color: var(--primary-text-color);
+}
+
+.header {
+  height: calc(7% - var(--card-padding));
+  min-height: 40px;
+  width: calc(100% - var(--card-padding));
+  background-color: var(--active-background);
   padding: var(--card-padding);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 2em;
+}
+
+.users {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+.users-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+.users-section {
+  display: flex;
+  flex-direction: column;
+  margin: 0 1em;
+}
+
+.users-section-header {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.content {
+  flex: 1;
+  height: 100%;
+  padding: var(--card-padding);
+  width: calc(100% - var(--card-padding));
+}
+
+.footer {
+  height: 6%;
+  min-height: 30px;
+  padding: var(--card-padding);
+  width: calc(100% - var(--card-padding));
 }

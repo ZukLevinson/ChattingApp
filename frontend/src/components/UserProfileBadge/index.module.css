@@ -1,4 +1,31 @@
 .container {
-  height: 40px;
+  height: 30px;
   width: calc(fit-content + 1em);
+  margin: auto 1em 0 auto;
+  display: flex;
+  flex-direction: row;
+  font-size: 0.9em;
+}
+
+.status {
+  text-transform: uppercase;
+  font-size: 0.7em;
+  font-weight: 700;
+}
+
+.icon {
+  margin-right: 0.75em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon > svg {
+  fill: var(--primary-text-color);
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
