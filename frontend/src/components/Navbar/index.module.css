@@ -20,3 +20,9 @@
   align-items: center;
   flex-direction: column;
 }
+
+.logo {
+  margin: 1em;
+  user-select: none;
+  cursor: default; 
+}
