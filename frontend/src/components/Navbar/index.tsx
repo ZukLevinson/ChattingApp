@@ -7,18 +7,73 @@ import ContactsIcon from "@mui/icons-material/Contacts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import { ReactComponent as AppLogo } from "../../assets/icons/logo.svg";
+import { w3cwebsocket as W3CWebsocket } from "websocket";
+import { useEffect, useState } from "react";
+import UserStatusUpdate from "../UserStatusUpdate";
+import { Status } from "../UserProfileBadge";
+
+const client = new W3CWebsocket(
+  `ws://${process.env.REACT_APP_HOST}:8080/statuses`
+);
 
 export default function Navbar() {
+  let [uniqueId, setUniqueId] = useState("" + Date.now());
+  let [statuses, setStatuses] = useState([] as JSX.Element[]);
+
+  const sendActive = () => {
+    client.send(
+      JSON.stringify({
+        userId: uniqueId,
+        status: "Online",
+      })
+    );
+  };
+
+  useEffect(() => {
+    client.onopen = () => {
+      console.log("Connected successfully");
+      sendActive();
+    };
+
+    client.onmessage = (incoming: any) => {
+      const { userId, status } = JSON.parse(incoming.data);
+
+      const remove = () => {
+        const updatedMessages = [
+          ...statuses.filter((_, i) => i !== statuses.length - 1),
+        ];
+
+        setStatuses(updatedMessages);
+      };
+
+      const addOn =
+        status === "Online"
+          ? createOnlineStatusUpdate(userId, remove)
+          : createOfflineStatusUpdate(userId, remove);
+
+      statuses.unshift(addOn);
+      const updatedMessages = [...statuses];
+
+      setStatuses(updatedMessages);
+    };
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles["buttons-container"]}>
         <div className={styles.logo}>
-          <AppLogo/>
+          <AppLogo />
         </div>
         <NavbarButton title="Chats" icon={ForumIcon} />
         <NavbarButton title="Contacts" icon={ContactsIcon} />
         <NavbarButton title="Account" icon={AccountCircleIcon} />
         <NavbarButton title="Settings" icon={SettingsIcon} />
+      </div>
+      <div
+        className={styles["buttons-container"] + " " + styles.statuses}
+        id="statuses"
+      >
+        {statuses}
       </div>
       <div className={styles["buttons-container"]}>
         <NavbarButton title="Help" icon={ContactSupportIcon} />
@@ -27,3 +82,13 @@ export default function Navbar() {
     </div>
   );
 }
+
+const createOnlineStatusUpdate = (id: string, remove: any) => {
+  const timer = setTimeout(remove, 1000);
+  return <UserStatusUpdate username={id} status={Status.online} />;
+};
+
+const createOfflineStatusUpdate = (id: string, remove: any) => {
+  const timer = setTimeout(remove, 1000);
+  return <UserStatusUpdate username={id} status={Status.offline} />;
+};

@@ -1,0 +1,13 @@
+.container {
+  color: var(--primary-text-color);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em;
+  width: 100%;
+  user-select: none;
+}
+
+.username {
+  text-transform: uppercase;
+  font-weight: 700;
+}
