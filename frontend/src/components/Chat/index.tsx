@@ -7,6 +7,7 @@ import IconButton from "../IconButton";
 import { ReactComponent as SendIcon } from "../../assets/icons/send_black_24dp.svg";
 import { useEffect, useState } from "react";
 import { w3cwebsocket as W3CWebsocket } from "websocket";
+import Message from "../Message";
 
 const tempOnlineUsers: UserProfileBadgeProps[] = [
   {
@@ -28,12 +29,16 @@ const tempOfflineUsers: UserProfileBadgeProps[] = [
     status: Status.offline,
   },
 ];
-const client = new W3CWebsocket("ws://localhost:8080/ws");
+const client = new W3CWebsocket(`ws://${process.env.REACT_APP_HOST}:8080/ws`);
 
 interface Props {}
 
 export default function Chat(props: Props) {
+  console.log(process.env);
   let [currentMessage, setCurrentMessage] = useState("");
+  let [messages, setMessages] = useState([
+    <Message text={"first message"} date={new Date()} />,
+  ]);
 
   const sendMessage = () => {
     client.send(
@@ -50,8 +55,13 @@ export default function Chat(props: Props) {
       console.log("Connected successfully");
     };
 
-    client.onmessage = (message) => {
-      console.log(`New message: '${message.data}'`);
+    client.onmessage = (incoming: any) => {
+      const { message } = JSON.parse(incoming.data);
+
+      messages.push(<Message text={message} date={new Date()} />);
+      const updatedMessages = [...messages];
+
+      setMessages(updatedMessages);
     };
   }, []);
 
@@ -84,8 +94,9 @@ export default function Chat(props: Props) {
           </div>
         </div>
       </div>
-      <div className={styles.content}>
-        <span>hi im the chat</span>
+      <div className={styles.content} id="chat">
+        {/* <span>hi im the chat</span> */}
+        {messages}
       </div>
       <div className={styles.footer}>
         <input
