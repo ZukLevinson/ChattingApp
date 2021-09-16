@@ -1,8 +1,8 @@
 package main
 
-/*
-The hub maintains the different channels while keeping records of the middlemans
-*/
+import "log"
+
+// The hub maintains the different channels while keeping records of the middlemans
 type Hub struct {
 	middlemans map[*Middleman]bool // Registered middlemans
 	broadcast chan []byte // Messages from  middlemans
@@ -26,11 +26,13 @@ func (h *Hub) runHub() {
 		select {
 			// Incoming registered middleman
 			case middleman := <-h.register:
+				log.Println("Incoming registered middleman")
 				h.middlemans[middleman] = true
 
 			// Incoming unregistered middleman
 			case middleman := <-h.unregister:
 				if _, ok := h.middlemans[middleman]; ok {
+					log.Println("Incoming unregistered middleman")
 					middleman.unregister(h)
 				}
 
@@ -40,6 +42,7 @@ func (h *Hub) runHub() {
 				for middleman := range h.middlemans {
 					select{
 						case middleman.send <- message: // If the middleman's channel is active, insert the message
+							log.Println("Spreaded the message '",message, "'")
 						default:
 							middleman.unregister(h)
 					}

@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	writeWait = 10 * time.Second	// Time allowed to write a message to the peer.
+	writeWait = 10 * time.Second // Time allowed to write a message to the peer.
 	pongWait = 60 * time.Second	// Time allowed to read the next pong message from the peer.
-	pingPeriod = (pongWait * 9) / 10	// Send pings to peer with this period. Must be less than pongWait.
-	maxMessageSize = 512	// Maximum message size allowed from peer.
+	pingPeriod = (pongWait * 9) / 10 // Send pings to peer with this period. Must be less than pongWait.
+	maxMessageSize = 512 // Maximum message size allowed from peer.
 )
 
 var (
@@ -64,7 +64,7 @@ func (m *Middleman) readingFromWSToHub() {
 
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Printf("error: %v", err)
+				log.Printf("WS -> Hub error: %v", err)
 			}
 			
 			break
@@ -82,13 +82,14 @@ func (m *Middleman) writingFromTheHubToWS() {
 	defer func() {
 		ticker.Stop()
 		m.conn.Close()
+		log.Printf("Connection with middleman closed!")
 	}()
 
 	for {
 		select {
 			// This case is activated when a message has been sent in the middleman's channel
 			case message, ok := <-m.send:
-				m.conn.SetWriteDeadline((time.Now().Add(writeWait)))
+				m.conn.SetWriteDeadline(time.Now().Add(writeWait))
 
 				if !ok {
 					m.conn.WriteMessage(websocket.CloseMessage, []byte{})
@@ -104,7 +105,7 @@ func (m *Middleman) writingFromTheHubToWS() {
 				w.Write(message) // Write the first message
 
 				// If theres any other messages - here we handle them
-				for i :=0; i < len(m.send); i++ {
+				for i := 0; i < len(m.send); i++ {
 					w.Write(newline)
 					w.Write(<-m.send)
 				}
