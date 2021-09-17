@@ -5,7 +5,6 @@ import {
   BelongsTo,
   Column,
   ForeignKey,
-  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -14,7 +13,7 @@ import Group from "./Group";
 import User from "./User";
 
 interface MessageAttributes {
-  messageId: number;
+  messageId?: number;
   content: string;
   userId: number;
   groupId: number;

@@ -15,10 +15,12 @@ import sequelizeConnection from "../config";
 import Group from "./Group";
 import User from "./User";
 
+export type Statuses = "Online" | "Offline" | "In chat";
+
 interface StatusUpdateAttributes {
   status: string;
   userId: number;
-  groupId: number;
+  groupId?: number;
 }
 export interface StatusUpdateInput
   extends Optional<StatusUpdateAttributes, "userId"> {}

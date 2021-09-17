@@ -14,8 +14,8 @@ import GroupRole from "./GroupRole";
 import User from "./User";
 
 interface UserInGroupAttributes {
-  userId: string;
-  groupId: string;
+  userId: number;
+  groupId: number;
   roleId: number;
 }
 export interface UserInGroupInput

@@ -29,3 +29,17 @@ export async function findAllByUserId(userId: number) {
     },
   });
 }
+
+export async function findAllByGroupId(
+  groupId: number,
+  limit?: number,
+  offset?: number
+) {
+  return await Message.findAll({
+    where: {
+      groupId,
+    },
+    limit,
+    offset,
+  });
+}

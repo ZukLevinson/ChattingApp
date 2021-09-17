@@ -18,6 +18,16 @@ export async function findAllByUserId(userId: number) {
   });
 }
 
+export async function findLatestByUserId(userId: number) {
+  return await StatusUpdate.findAll({
+    where: {
+      userId,
+    },
+    limit: 1,
+    order: [["createdAt", "DESC"]],
+  });
+}
+
 export async function findAllByGroupId(groupId: number) {
   return await StatusUpdate.findAll({
     where: {
