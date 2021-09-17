@@ -11,6 +11,8 @@ import {
 } from "sequelize-typescript";
 import sequelizeConnection from "../config";
 import Group from "./Group";
+import Message from "./Message";
+import StatusUpdate from "./StatusUpdate";
 
 interface UserAttributes {
   userId: number;
@@ -49,6 +51,12 @@ class User extends Model implements UserAttributes {
 
   @HasMany(() => Group)
   public groups!: Group[];
+
+  @HasMany(() => StatusUpdate)
+  public statusUpdates!: StatusUpdate[];
+
+  @HasMany(() => Message)
+  public messages!: Message[];
 }
 
 export default User;

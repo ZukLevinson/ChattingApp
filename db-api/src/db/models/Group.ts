@@ -11,6 +11,8 @@ import {
   Table,
 } from "sequelize-typescript";
 import GroupRole from "./GroupRole";
+import Message from "./Message";
+import StatusUpdate from "./StatusUpdate";
 import User from "./User";
 
 interface GroupAttributes {
@@ -49,6 +51,12 @@ class Group extends Model {
 
   @HasMany(() => GroupRole)
   public groupRoles!: GroupRole[];
+
+  @HasMany(() => StatusUpdate)
+  public statusUpdates!: StatusUpdate[];
+
+  @HasMany(() => Message)
+  public messages!: Message[];
 }
 
 export default Group;
