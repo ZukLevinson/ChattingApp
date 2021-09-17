@@ -5,7 +5,7 @@ import UserProfileBadge, {
 } from "../UserProfileBadge";
 import IconButton from "../IconButton";
 import { ReactComponent as SendIcon } from "../../assets/icons/send_black_24dp.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { w3cwebsocket as W3CWebsocket } from "websocket";
 import Message from "../Message";
 
@@ -39,6 +39,7 @@ export default function Chat(props: Props) {
   let [currentMessage, setCurrentMessage] = useState("");
   let [messages, setMessages] = useState([] as JSX.Element[]);
   let [uniqueId, setUniqueId] = useState("" + Date.now());
+  let textArea = useRef<any>();
 
   const sendMessage = () => {
     client.send(
@@ -66,7 +67,14 @@ export default function Chat(props: Props) {
 
       setMessages(updatedMessages);
     };
+
+    textArea.current?.focus(); // Focus on text box
   }, []);
+
+  const handleKeyDownTextArea = (e: any, limit: number) => {
+    e.target.style.height = "inherit";
+    e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
+  };
 
   return (
     <div className={styles.container}>
@@ -98,18 +106,34 @@ export default function Chat(props: Props) {
         </div>
       </div>
       <div className={styles.content} id="chat">
-        {/* <span>hi im the chat</span> */}
         {messages}
       </div>
-      <div className={styles.footer}>
-        <input
-          type="text"
-          value={currentMessage}
-          onChange={(e) => setCurrentMessage(e.target.value)}
-          placeholder="What's on your mind?"
-        />
+      <form className={styles.footer}>
+        <div className={styles.texter}>
+          <textarea
+            // type="text"
+            value={currentMessage}
+            onChange={(e) => setCurrentMessage(e.target.value)}
+            placeholder="What's on your mind?"
+            onKeyPress={(e) => {
+              console.log(e.code === "Enter");
+              e.code === "Enter" && sendMessage();
+            }}
+            onKeyDown={(e) => handleKeyDownTextArea(e, 50)}
+            ref={textArea}
+            rows={1}
+          />
+        </div>
+        <div className={styles.limit}>
+          <span>{currentMessage.length}/512</span>
+        </div>
+
         <IconButton icon={SendIcon} text={"send"} onPress={sendMessage} />
-      </div>
+        <input
+          type="submit"
+          style={{ visibility: "hidden", display: "none" }}
+        />
+      </form>
     </div>
   );
 }
