@@ -1,8 +1,10 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { DataTypes, Optional } from "sequelize";
 import {
   AllowNull,
   AutoIncrement,
   Column,
+  HasMany,
+  Model,
   PrimaryKey,
   Table,
   Unique,
@@ -25,7 +27,7 @@ export interface UserOuput extends Required<UserAttributes> {}
   underscored: true,
   paranoid: true,
 })
-class User extends Model<UserAttributes, UserInput> implements UserAttributes {
+class User extends Model implements UserAttributes {
   @PrimaryKey
   @AutoIncrement
   @Column(DataTypes.INTEGER)
@@ -44,6 +46,9 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
 
   @Column({ type: DataTypes.STRING(60), validate: { isEmail: true } })
   public email!: string;
+
+  @HasMany(() => Group)
+  public groups!: Group[];
 }
 
 export default User;

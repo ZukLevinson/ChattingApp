@@ -1,16 +1,23 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { DataTypes, Optional } from "sequelize";
 import {
   AllowNull,
   AutoIncrement,
+  BelongsTo,
   Column,
+  ForeignKey,
+  HasMany,
+  Model,
   PrimaryKey,
   Table,
 } from "sequelize-typescript";
+import GroupRole from "./GroupRole";
+import User from "./User";
 
 interface GroupAttributes {
   groupId: number;
   groupName: string;
   groupDescription?: string;
+  creatorId: number;
 }
 export interface GroupInput extends Optional<GroupAttributes, "groupId"> {}
 export interface GroupOuput extends Required<GroupAttributes> {}
@@ -20,9 +27,7 @@ export interface GroupOuput extends Required<GroupAttributes> {}
   underscored: true,
   paranoid: true,
 })
-class Group
-  extends Model
-{
+class Group extends Model {
   @AutoIncrement
   @PrimaryKey
   @Column(DataTypes.INTEGER)
@@ -34,6 +39,16 @@ class Group
   @AllowNull
   @Column(DataTypes.STRING(120))
   public groupDescription?: string;
+
+  @ForeignKey(() => User)
+  @Column
+  public creatorId!: number;
+
+  @BelongsTo(() => User)
+  public creator!: User;
+
+  @HasMany(() => GroupRole)
+  public groupRoles!: GroupRole[];
 }
 
 export default Group;
