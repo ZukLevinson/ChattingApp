@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -31,16 +32,31 @@ type Middleman struct {
 	hub *Hub
 	conn *websocket.Conn // The websocket connection.
 	send chan []byte // Buffered channel of outbound messages.
+	userId string
 }
 
-func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) *Middleman {
+type User struct {
+	userId string
+}
+
+func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middleman, error) {
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 	conn, err := upgrader.Upgrade(w, r, nil) // Upgrading http connection to WS
-
+	
 	if err != nil {
 		panic(err)
 	} else {
-		return &Middleman{hub: hub, conn: conn, send: make(chan []byte, 256)}
+		var u User
+
+		err = json.NewDecoder(r.Body).Decode(&u)
+
+		if err != nil {
+			log.Panic("Error in parsing")
+
+			return nil, &time.ParseError{}
+		}
+
+		return &Middleman{hub: hub, conn: conn, send: make(chan []byte, 256), userId: u.userId}, nil
 	}
 }
 

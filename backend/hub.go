@@ -9,10 +9,47 @@ type Hub struct {
 	broadcast chan []byte // Messages from  middlemans
 	register chan *Middleman // Register requests from middlemans
 	unregister chan *Middleman // Unregister requests from middlemans
+	allowedUsers map[string]*Middleman
+}
+
+func (h *Hub) listAllowedUsers() []string {
+	keys := make([]string, 0, len(h.allowedUsers))
+
+    for k := range h.allowedUsers {
+        keys = append(keys, k)
+    }
+	
+	return keys
+}
+
+func (h *Hub) checkIfInAllowedUsers(userId string) bool {
+	allowedUsersList := h.listAllowedUsers()
+	
+    for _, val := range allowedUsersList {
+        if (val == userId) {
+			return true
+		}
+    }
+	
+	return false
+}
+
+func (h *Hub) registerMiddleman(middleman *Middleman) {
+	if(h.checkIfInAllowedUsers(middleman.userId)){
+		h.register <- middleman
+	} else {
+		log.Panic("Middleman not allowed!")
+	}
 }
 
 // Creates new Hub
-func createHub(name string) *Hub {
+func createHub(name string, allowedUsersList []string) *Hub {
+	// Create allowed users map (while middleman is STILL UNKNOWN!)
+	allowedUsers := make(map[string]*Middleman)
+	for _, val := range allowedUsersList {
+        allowedUsers[val] = nil
+    }
+
 	// Returns the pointer of the new Hub
 	return &Hub{
 		name: name,
@@ -20,6 +57,7 @@ func createHub(name string) *Hub {
 		register: make(chan *Middleman),
 		unregister: make(chan *Middleman),
 		middlemans: make(map[*Middleman]bool),
+		allowedUsers: allowedUsers,
 	}
 }
 
