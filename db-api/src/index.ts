@@ -6,9 +6,7 @@ import dbInit from "./db/init";
 dbInit();
 
 const app: Application = express();
-const port = 3000;
-
-console.log(process.env);
+const port = process.env.PORT || 5000;
 
 // Body parsing Middleware
 app.use(express.json());
