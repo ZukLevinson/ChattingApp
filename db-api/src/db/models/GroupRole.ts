@@ -13,7 +13,7 @@ import {
 } from "sequelize-typescript";
 import sequelizeConnection from "../config";
 import Group from "./Group";
-import UserInGroup from "./UsersInGroup";
+import UserInGroup from "./UserInGroup";
 
 interface GroupRoleAttributes {
   roleId: number;

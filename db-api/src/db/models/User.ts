@@ -15,13 +15,12 @@ import Message from "./Message";
 import StatusUpdate from "./StatusUpdate";
 
 interface UserAttributes {
-  userId: number;
   firstName: string;
-  lastName: string;
+  lastName?: string;
   username: string;
   email: string;
 }
-export interface UserInput extends Optional<UserAttributes, "userId"> {}
+export interface UserInput extends Optional<UserAttributes, never> {}
 export interface UserOuput extends Required<UserAttributes> {}
 
 @Table({
