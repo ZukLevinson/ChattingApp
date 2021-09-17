@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 	"time"
@@ -53,7 +54,7 @@ func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middlem
 		if err != nil {
 			log.Panic("Error in parsing")
 
-			return nil, &time.ParseError{}
+			return nil, errors.New("Error in parsing")
 		}
 
 		return &Middleman{hub: hub, conn: conn, send: make(chan []byte, 256), userId: u.userId}, nil

@@ -5,6 +5,7 @@ import {
   findGroupByPk,
   createGroup,
   findAllGroups,
+  findAllUsersInGroup,
 } from "../db/services/GroupServices";
 
 const userRouter = Router();
@@ -29,6 +30,10 @@ userRouter.post("/", async (req: Request, res: Response) => {
       req.body.groupDescription
     )
   );
+});
+
+userRouter.get("/:id/users", async (req: Request, res: Response) => {
+  res.json(await findAllUsersInGroup(parseInt(req.params.id)));
 });
 
 export default userRouter;

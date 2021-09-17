@@ -14,6 +14,7 @@ import GroupRole from "./GroupRole";
 import Message from "./Message";
 import StatusUpdate from "./StatusUpdate";
 import User from "./User";
+import UserInGroup from "./UserInGroup";
 
 interface GroupAttributes {
   groupId?: number;
@@ -57,6 +58,9 @@ class Group extends Model {
 
   @HasMany(() => Message)
   public messages!: Message[];
+
+  @HasMany(() => UserInGroup)
+  public userInGroups!: UserInGroup[];
 }
 
 export default Group;

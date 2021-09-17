@@ -24,6 +24,14 @@ func serveAPI(w http.ResponseWriter, r *http.Request, hub *Hub) {
 func main () {
 	flag.Parse()
 
+	api := createPostgresAPIInstance()
+	val, _ := api.findGroup(1)
+	log.Println(val)
+
+	
+	val1, _ := api.getGroupUserRoles(1)
+	log.Println(val1)
+
 	messageHub := createHub("Message", []string{"1"})
 	statusHub := createHub("Status", []string{"1"})
 

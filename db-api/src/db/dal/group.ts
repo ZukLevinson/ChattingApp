@@ -29,3 +29,7 @@ export async function findAllByUserId(userId: number) {
     },
   });
 }
+
+export async function findOne(args: any) {
+  return await Group.findOne({ ...args });
+}

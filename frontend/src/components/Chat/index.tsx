@@ -30,7 +30,7 @@ const tempOfflineUsers: UserProfileBadgeProps[] = [
   },
 ];
 const client = new W3CWebsocket(
-  `ws://${process.env.REACT_APP_HOST}:8080/messages`
+  `ws://${process.env.REACT_APP_HOST}:8080/messages?groupId=1`
 );
 
 interface Props {}

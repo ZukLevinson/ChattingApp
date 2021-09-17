@@ -1,6 +1,7 @@
 import * as groupDAL from "../dal/group";
 import * as userDAL from "../dal/user";
 import GroupRole from "../models/GroupRole";
+import UserInGroup from "../models/UserInGroup";
 
 export async function createGroup(
   userId: number,
@@ -24,4 +25,15 @@ export async function findAllGroups() {
 
 export async function findGroupByPk(groupId: number) {
   return await groupDAL.findByPk(groupId);
+}
+
+export async function findAllUsersInGroup(groupId: number) {
+  const group = await groupDAL.findOne({
+    where: {
+      groupId,
+    },
+    include: [UserInGroup],
+  });
+
+  return group ? group.userInGroups : [];
 }
