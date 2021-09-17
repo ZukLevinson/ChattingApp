@@ -19,7 +19,7 @@
 }
 
 .title {
-  font-size: 0.8em;
+  font-size: 0.6em;
   font-weight: 700;
   text-transform: uppercase;
   transition: font-size 600ms;
@@ -38,8 +38,8 @@
 }
 
 .icon {
-  height: 80%;
-  width: 80%;
+  height: 70%;
+  width: 70%;
 }
 
 .icon > svg {

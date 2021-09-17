@@ -28,7 +28,7 @@ export default function IconButton(props: Props) {
       </div>
       <div
         className={styles.title}
-        style={{ fontSize: isHovered ? "0.8em" : "0" }}
+        style={{ fontSize: isHovered ? "0.6em" : "0" }}
       >
         <span>{props.text}</span>
       </div>
