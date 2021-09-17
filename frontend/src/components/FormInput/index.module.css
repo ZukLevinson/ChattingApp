@@ -1,0 +1,24 @@
+:root {
+  --main-padding: 3em;
+}
+
+.container {
+  display: flex;
+  background-color: #21344e;
+  align-items: center;
+  height: 3em;
+  padding: var(--main-padding);
+}
+
+.label {
+  flex: 1;
+  margin-left: 1em;
+}
+
+.input-container {
+  flex: 3;
+}
+
+.input-box {
+    width: 80%;
+}
