@@ -19,3 +19,9 @@
   flex-direction: column;
   justify-content: center;
 }
+
+.title {
+  font-size: 3em;
+  padding: 1em;
+  color: #ffffff; 
+}

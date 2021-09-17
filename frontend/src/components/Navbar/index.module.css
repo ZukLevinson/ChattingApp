@@ -7,7 +7,7 @@
   height: calc(100% - 2*var(--main-padding));
   width: calc(180px - 2*var(--main-padding));
   align-items: center;
-  background-color: #161b22;
+  background-color: var(--secondary-background);
   justify-content: space-between;
   flex-direction: column;
   padding: var(--main-padding);

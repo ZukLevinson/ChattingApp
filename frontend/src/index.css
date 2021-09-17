@@ -11,6 +11,21 @@
   --active-background: #1a212c;
   --secondary-active-background: #19202b;
   --primary-text-color: #c9d1d9;
+  --hover-color: #3d4858;
+  --card-border: #30363d;
+  --online-color: rgb(7, 107, 24);
+  --offline-color: rgb(91, 88, 94);
+  --in-chat-color: rgb(129, 6, 6);
+  --button-color: #30363f;
+}
+
+[data-theme="purple"] {
+  --primary-background: #010409;
+  --secondary-background: #0d1117;
+  --active-background: #1a212c;
+  --secondary-active-background: #19202b;
+  --primary-text-color: #c9d1d9;
+  --hover-color: #3d4858;
   --card-border: #30363d;
   --online-color: rgb(7, 107, 24);
   --offline-color: rgb(91, 88, 94);
