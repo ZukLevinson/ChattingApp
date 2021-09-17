@@ -42,3 +42,7 @@ export async function findAllByUserIdAndGroupId(
     where: { userId, groupId },
   });
 }
+
+export async function findAll() {
+  return await User.findAll();
+}

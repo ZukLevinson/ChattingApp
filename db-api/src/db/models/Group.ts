@@ -16,7 +16,7 @@ import StatusUpdate from "./StatusUpdate";
 import User from "./User";
 
 interface GroupAttributes {
-  groupId: number;
+  groupId?: number;
   groupName: string;
   groupDescription?: string;
   creatorId: number;

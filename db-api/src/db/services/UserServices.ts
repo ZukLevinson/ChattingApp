@@ -42,3 +42,7 @@ export async function addUserToGroup(
 export async function findUserByPk(userId: number) {
   return await userDal.findByPk(userId);
 }
+
+export async function findAllUsers() {
+  return await userDal.findAll();
+}

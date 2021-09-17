@@ -12,6 +12,6 @@ export async function createMessage(
   });
 }
 
-export async function findAllByGroupId(groupId: number) {
+export async function findAllMessagesByGroupId(groupId: number) {
   return await messageDAL.findAllByGroupId(groupId);
 }

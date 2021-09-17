@@ -4,7 +4,6 @@ import GroupRole from "../models/GroupRole";
 
 export async function createGroup(
   userId: number,
-  groupId: number,
   groupName: string,
   groupDescription?: string
 ) {
@@ -12,7 +11,6 @@ export async function createGroup(
     creatorId: userId,
     groupName,
     groupDescription,
-    groupId,
   });
 }
 
@@ -20,6 +18,10 @@ export async function findAllGroupsByUserId(userId: number) {
   return await groupDAL.findAllByUserId(userId);
 }
 
-export async function findByPk(groupId: number) {
+export async function findAllGroups() {
+  return await groupDAL.findAll();
+}
+
+export async function findGroupByPk(groupId: number) {
   return await groupDAL.findByPk(groupId);
 }
