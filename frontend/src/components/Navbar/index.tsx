@@ -11,7 +11,10 @@ import { w3cwebsocket as W3CWebsocket } from "websocket";
 import { useEffect, useState } from "react";
 import UserStatusUpdate from "../UserStatusUpdate";
 import { Status } from "../UserProfileBadge";
-
+import PaletteIcon from "@mui/icons-material/Palette";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../state/index";
 
 const createOnlineStatusUpdate = (id: string, remove: any) => {
   const timer = setTimeout(remove, 1000);
@@ -28,6 +31,10 @@ const client = new W3CWebsocket(
 );
 
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const { changeTheme } = bindActionCreators(actionCreators, dispatch);
+  const state = useSelector((state: any) => state);
+
   let [uniqueId, setUniqueId] = useState("" + Date.now());
   let [statuses, setStatuses] = useState([] as JSX.Element[]);
 
@@ -87,6 +94,14 @@ export default function Navbar() {
         {statuses}
       </div>
       <div className={styles["buttons-container"]}>
+        <div className={styles["buttons-container"]} onClick={() => changeTheme(state.theme)}>
+          <NavbarButton
+          title="Theme"
+          to="/chats"
+          icon={PaletteIcon}
+        />
+        </div>
+        
         <NavbarButton title="Help" to="/chats" icon={ContactSupportIcon} />
         <NavbarButton title="Sign Out" to="/chats" icon={LogoutIcon} />
       </div>
