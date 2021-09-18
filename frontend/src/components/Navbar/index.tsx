@@ -12,6 +12,17 @@ import { useEffect, useState } from "react";
 import UserStatusUpdate from "../UserStatusUpdate";
 import { Status } from "../UserProfileBadge";
 
+
+const createOnlineStatusUpdate = (id: string, remove: any) => {
+  const timer = setTimeout(remove, 1000);
+  return <UserStatusUpdate username={id} status={Status.online} />;
+};
+
+const createOfflineStatusUpdate = (id: string, remove: any) => {
+  const timer = setTimeout(remove, 1000);
+  return <UserStatusUpdate username={id} status={Status.offline} />;
+};
+
 const client = new W3CWebsocket(
   `ws://${process.env.REACT_APP_HOST}:8080/statuses`
 );
@@ -82,13 +93,3 @@ export default function Navbar() {
     </div>
   );
 }
-
-const createOnlineStatusUpdate = (id: string, remove: any) => {
-  const timer = setTimeout(remove, 1000);
-  return <UserStatusUpdate username={id} status={Status.online} />;
-};
-
-const createOfflineStatusUpdate = (id: string, remove: any) => {
-  const timer = setTimeout(remove, 1000);
-  return <UserStatusUpdate username={id} status={Status.offline} />;
-};
