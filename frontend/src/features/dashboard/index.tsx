@@ -6,10 +6,9 @@ import Navbar from "../../components/Navbar";
 import { useSelector } from "react-redux";
 
 export default function Dashboard() {
-  const theme = useSelector((state: any) => state.theme);
-  console.log(theme);
+  const state = useSelector((state: any) => state);
   return (
-    <div className={styles.container} data-theme={theme}>
+    <div className={styles.container} data-theme={state.theme}>
       <Router>
         <Navbar />
         <Switch>

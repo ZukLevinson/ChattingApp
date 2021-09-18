@@ -18,6 +18,7 @@
   --offline-color: rgb(91, 88, 94);
   --in-chat-color: rgb(129, 6, 6);
   --button-color: #30363f;
+  --text-color: #fff;
 }
 
 [data-theme="purple"] {
@@ -41,7 +42,7 @@
   --active-background: #A4EBF3;
   --secondary-active-background: #AAAAAA;
   --primary-text-color: #000000;
-  --hover-color: #3d4858;
+  --hover-color: #AAAAAA;
   --hover-text-color: #0c4279;
   --card-border: #30363d;
   --online-color: rgb(7, 107, 24);

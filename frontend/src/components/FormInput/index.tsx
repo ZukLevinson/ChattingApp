@@ -6,9 +6,9 @@ interface Props {
 }
 
 export default function FormInput(props: Props) {
-  const theme = useSelector((state: any) => state.theme);
+  const state = useSelector((state: any) => state);
   return (
-    <div className={styles.container} data-theme={theme}>
+    <div className={styles.container} data-theme={state.theme}>
       <div className={styles.label}>
         <label>{props.title}:</label>
       </div>

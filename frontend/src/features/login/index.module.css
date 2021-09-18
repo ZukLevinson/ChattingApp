@@ -10,7 +10,7 @@
   justify-content: center;
   flex-direction: column;
   padding: var(--main-padding);
-  color: #fff;
+  color: var(--primary-text-color);
 }
 
 .form {
@@ -25,7 +25,7 @@
 .title {
   font-size: 3em;
   padding: 1em;
-  color: #ffffff; 
+  color: var(--primary-text-color); 
 }
 
 .button {
