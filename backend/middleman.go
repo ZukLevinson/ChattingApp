@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -35,10 +36,6 @@ type Middleman struct {
 	userId string
 }
 
-type User struct {
-	UserId string `json:"userId"`
-}
-
 func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middleman, error) {
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 	conn, err := upgrader.Upgrade(w, r, nil) // Upgrading http connection to WS
@@ -46,7 +43,7 @@ func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middlem
 	if err != nil {
 		panic(err)
 	} else {
-		var u User = User{UserId: "1"}
+		var u User = User{UserId: 1}
 
 		// err = json.NewDecoder(r.Body).Decode(&u)
 		
@@ -56,7 +53,7 @@ func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middlem
 			return nil, errors.New("Error in parsing User")
 		}
 
-		return &Middleman{hub: hub, conn: conn, send: make(chan []byte, 256), userId: u.UserId}, nil
+		return &Middleman{hub: hub, conn: conn, send: make(chan []byte, 256), userId: strconv.Itoa(u.UserId)}, nil
 	}
 }
 
