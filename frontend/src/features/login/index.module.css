@@ -18,10 +18,37 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background-color: var(--secondary-background);
+  border-radius: 1em;
 }
 
 .title {
   font-size: 3em;
   padding: 1em;
   color: #ffffff; 
+}
+
+.button {
+  margin-top: 1em;
+  display: flex;
+  font-size: 1.5em;
+  width: calc(30% - var(--main-padding));
+  justify-content: center;
+  padding: calc(var(--main-padding) / 2);
+  background-color: var(--hover-color);
+  border-radius: 0.6em;
+}
+
+
+.sign-up {
+  margin-top: 1em;
+  display: flex;
+  width: calc(30% - var(--main-padding));
+  justify-content: center;
+  padding: calc(var(--main-padding) / 2);
+  border-radius: 0.6em;
+}
+
+.sign-up:hover {
+  color: var(--hover-text-color);
 }

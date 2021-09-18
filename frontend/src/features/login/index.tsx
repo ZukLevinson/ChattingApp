@@ -8,10 +8,9 @@ export default function Login() {
       <form className={styles.form}>
         <FormInput title="Username" />
         <FormInput title="Password" />
-        <div>
-          <input type="submit" value="Submit" />
-        </div>
       </form>
+      <div className={styles.button}>Log In</div>
+      <div className={styles["sign-up"]}>Not signed up yet? Sign Up here!</div>
     </div>
   );
 }
