@@ -11,15 +11,12 @@ import (
 	"net/http"
 )
 
-type PostgresAPI struct {
-	host string
-}
-
 type Group struct {
 	GroupId          int `json:"groupId"`
 	GroupName        string `json:"groupName"`
 	GroupDescription string `json:"groupDescription,omitempty"`
 	CreatorId        int `json:"creatorId"`
+	Users *[]UserInGroup `json:"users,omitempty"`
 }
 
 type UserInGroup struct {
@@ -28,12 +25,10 @@ type UserInGroup struct {
 	RoleId          int `json:"roleId"`
 }
 
-func createPostgresAPIInstance() *PostgresAPI {
-	return &PostgresAPI{host: "http://localhost:5000"}
-}
+const api = "http://localhost:5000"
 
-func (api *PostgresAPI) findGroup(groupId int) (*Group, error) {
-	resp, err := http.Get(api.host + "/groups/" + strconv.Itoa(groupId))
+func createGroupInstance(groupId int) (*Group, error) {
+	resp, err := http.Get(api + "/groups/" + strconv.Itoa(groupId))
 
 	if err != nil {
 		log.Panic(err)
@@ -51,16 +46,16 @@ func (api *PostgresAPI) findGroup(groupId int) (*Group, error) {
 	err = json.Unmarshal(body, &group)
 
 	if err != nil {
-		log.Panic("Error in parsing")
+		log.Panicln("Error in parsing Group - ", err.Error())
 
-		return nil, errors.New("Error in parsing")
+		return nil, errors.New("Error in parsing Group")
 	}
 
 	return &group, nil
 }
 
-func (api *PostgresAPI) getGroupUserRoles(groupId int) (*[]UserInGroup, error) {
-	resp, err := http.Get(api.host + "/groups/" + strconv.Itoa(groupId) + "/users")
+func (group *Group) getGroupUsers() (*[]UserInGroup, error) {
+	resp, err := http.Get(api + "/groups/" + strconv.Itoa(group.GroupId) + "/users")
 
 	if err != nil {
 		log.Panic(err)
@@ -78,10 +73,12 @@ func (api *PostgresAPI) getGroupUserRoles(groupId int) (*[]UserInGroup, error) {
 	err = json.Unmarshal(body, &users)
 
 	if err != nil {
-		log.Panic("Error in parsing")
+		log.Panicln("Error in parsing UserInGroup - ", err.Error())
 
-		return nil, errors.New("Error in parsing")
+		return nil, errors.New("Error in parsing UserInGroup")
 	}
+
+	group.Users = &users
 
 	return &users, nil
 }

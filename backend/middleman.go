@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"log"
 	"net/http"
@@ -37,7 +36,7 @@ type Middleman struct {
 }
 
 type User struct {
-	userId string
+	UserId string `json:"userId"`
 }
 
 func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middleman, error) {
@@ -47,17 +46,17 @@ func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middlem
 	if err != nil {
 		panic(err)
 	} else {
-		var u User
+		var u User = User{UserId: "1"}
 
-		err = json.NewDecoder(r.Body).Decode(&u)
-
+		// err = json.NewDecoder(r.Body).Decode(&u)
+		
 		if err != nil {
-			log.Panic("Error in parsing")
+			log.Panicln("Error in parsing User - ", err.Error())
 
-			return nil, errors.New("Error in parsing")
+			return nil, errors.New("Error in parsing User")
 		}
 
-		return &Middleman{hub: hub, conn: conn, send: make(chan []byte, 256), userId: u.userId}, nil
+		return &Middleman{hub: hub, conn: conn, send: make(chan []byte, 256), userId: u.UserId}, nil
 	}
 }
 

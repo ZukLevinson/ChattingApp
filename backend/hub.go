@@ -1,6 +1,9 @@
 package main
 
-import "log"
+import (
+	"errors"
+	"log"
+)
 
 // The hub maintains the different channels while keeping records of the middlemans
 type Hub struct {
@@ -26,7 +29,9 @@ func (h *Hub) checkIfInAllowedUsers(userId string) bool {
 	allowedUsersList := h.listAllowedUsers()
 	
     for _, val := range allowedUsersList {
+		log.Println("Checking user - ", val)
         if (val == userId) {
+			log.Println("User", val, "is valid!")
 			return true
 		}
     }
@@ -34,12 +39,17 @@ func (h *Hub) checkIfInAllowedUsers(userId string) bool {
 	return false
 }
 
-func (h *Hub) registerMiddleman(middleman *Middleman) {
+func (h *Hub) registerMiddleman(middleman *Middleman) error {
 	if(h.checkIfInAllowedUsers(middleman.userId)){
-		h.register <- middleman
+		h.register<-middleman
+		log.Println("Registered middleman to Hub with the name - ", h.name)
+
+		return nil
 	} else {
-		log.Panic("Middleman not allowed!")
-	}
+		log.Println("Middleman not allowed!")
+
+		return errors.New("UserId not allowed")
+	} 
 }
 
 // Creates new Hub
@@ -58,6 +68,14 @@ func createHub(name string, allowedUsersList []string) *Hub {
 		unregister: make(chan *Middleman),
 		middlemans: make(map[*Middleman]bool),
 		allowedUsers: allowedUsers,
+	}
+}
+
+func (h *Hub) updateUsers(currentlyAllowedUsers []string) {
+	for _, userId := range currentlyAllowedUsers {
+		if(!h.checkIfInAllowedUsers(userId)) {
+			h.allowedUsers[userId] = nil
+		}
 	}
 }
 
