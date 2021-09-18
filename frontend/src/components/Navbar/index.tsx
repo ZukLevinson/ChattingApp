@@ -64,10 +64,10 @@ export default function Navbar() {
         <div className={styles.logo}>
           <AppLogo />
         </div>
-        <NavbarButton title="Chats" icon={ForumIcon} />
-        <NavbarButton title="Contacts" icon={ContactsIcon} />
-        <NavbarButton title="Account" icon={AccountCircleIcon} />
-        <NavbarButton title="Settings" icon={SettingsIcon} />
+        <NavbarButton title="Chats" to="/chats" icon={ForumIcon} />
+        <NavbarButton title="Contacts" to="/chats" icon={ContactsIcon} />
+        <NavbarButton title="Account" to="/login" icon={AccountCircleIcon} />
+        <NavbarButton title="Settings" to="/chats" icon={SettingsIcon} />
       </div>
       <div
         className={styles["buttons-container"] + " " + styles.statuses}
@@ -76,8 +76,8 @@ export default function Navbar() {
         {statuses}
       </div>
       <div className={styles["buttons-container"]}>
-        <NavbarButton title="Help" icon={ContactSupportIcon} />
-        <NavbarButton title="Sign Out" icon={LogoutIcon} />
+        <NavbarButton title="Help" to="/chats" icon={ContactSupportIcon} />
+        <NavbarButton title="Sign Out" to="/chats" icon={LogoutIcon} />
       </div>
     </div>
   );
