@@ -3,6 +3,7 @@
 :root {
   --card-margin: 1.5em;
   --card-padding: 1em;
+  --main-padding: 1em;
 }
 
 [data-theme="dark"] {
@@ -24,7 +25,7 @@
 [data-theme="purple"] {
   --primary-background: #000000;
   --secondary-background: #150050;
-  --active-background: #3F0071;
+  --active-background: #3f0071;
   --secondary-active-background: #610094;
   --primary-text-color: #c9d1d9;
   --hover-color: #3d4858;
@@ -37,12 +38,12 @@
 }
 
 [data-theme="light"] {
-  --primary-background: #F4F9F9;
-  --secondary-background: #CCF2F4;
-  --active-background: #A4EBF3;
-  --secondary-active-background: #AAAAAA;
+  --primary-background: #f4f9f9;
+  --secondary-background: #ccf2f4;
+  --active-background: #a4ebf3;
+  --secondary-active-background: #aaaaaa;
   --primary-text-color: #000000;
-  --hover-color: #AAAAAA;
+  --hover-color: #aaaaaa;
   --hover-text-color: #0c4279;
   --card-border: #30363d;
   --online-color: rgb(7, 110, 24);

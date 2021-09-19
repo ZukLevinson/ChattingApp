@@ -82,10 +82,10 @@ export default function Navbar() {
         <div className={styles.logo}>
           <AppLogo />
         </div>
+        <NavbarButton title="Dashboard" to="/dashboard" icon={ContactsIcon} />
         <NavbarButton title="Chats" to="/chats" icon={ForumIcon} />
-        <NavbarButton title="Contacts" to="/chats" icon={ContactsIcon} />
         <NavbarButton title="Account" to="/login" icon={AccountCircleIcon} />
-        <NavbarButton title="Settings" to="/chats" icon={SettingsIcon} />
+        <NavbarButton title="Settings" to="/settings" icon={SettingsIcon} />
       </div>
       <div
         className={styles["buttons-container"] + " " + styles.statuses}
@@ -94,14 +94,13 @@ export default function Navbar() {
         {statuses}
       </div>
       <div className={styles["buttons-container"]}>
-        <div className={styles["buttons-container"]} onClick={() => changeTheme(state.theme)}>
-          <NavbarButton
-          title="Theme"
-          to="/chats"
-          icon={PaletteIcon}
-        />
+        <div
+          className={styles["buttons-container"]}
+          onClick={() => changeTheme(state.theme)}
+        >
+          <NavbarButton title="Theme" to="/chats" icon={PaletteIcon} />
         </div>
-        
+
         <NavbarButton title="Help" to="/chats" icon={ContactSupportIcon} />
         <NavbarButton title="Sign Out" to="/chats" icon={LogoutIcon} />
       </div>
