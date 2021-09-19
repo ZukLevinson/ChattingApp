@@ -3,18 +3,19 @@
 }
 
 .container {
+  flex: 1;
   display: flex;
   height: calc(100% - 2 * var(--main-padding));
-  width: calc(100% - 2 * var(--main-padding));
+  width: 100%;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: var(--main-padding);
+  margin: var(--main-padding);
   color: var(--primary-text-color);
 }
 
 .form {
-  width : 30%;
+  width: 30%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,7 +26,7 @@
 .title {
   font-size: 3em;
   padding: 1em;
-  color: var(--primary-text-color); 
+  color: var(--primary-text-color);
 }
 
 .button {
@@ -38,7 +39,6 @@
   background-color: var(--hover-color);
   border-radius: 0.6em;
 }
-
 
 .sign-up {
   margin-top: 1em;
