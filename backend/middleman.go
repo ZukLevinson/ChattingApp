@@ -27,16 +27,15 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-// Middleman acts like a messanger between the WS connection and the hub
+/*
+Middleman represent the connection between the client's WS request and hub - two way connection.
+This allowes the use of new layer which lets us when we recieve new WS message, to return it to all of the other listening users (middlemans)
+*/
 type Middleman struct {
-	hub *Hub
-	conn *websocket.Conn // The websocket connection.
-	send chan []byte // Buffered channel of outbound messages.
-	userId string
-}
-
-type User struct {
-	UserId string `json:"userId"`
+	hub *Hub // The hub the middleman is using
+	conn *websocket.Conn // The websocket connection from the client
+	send chan []byte // Buffered channel of outbound messages
+	user *User // The user which is related to the middleman
 }
 
 func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middleman, error) {
@@ -46,7 +45,7 @@ func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middlem
 	if err != nil {
 		panic(err)
 	} else {
-		var u User = User{UserId: "1"}
+		var u User = User{UserId: 1}
 
 		// err = json.NewDecoder(r.Body).Decode(&u)
 		
@@ -56,7 +55,7 @@ func createMiddleman(hub *Hub, w http.ResponseWriter, r *http.Request) (*Middlem
 			return nil, errors.New("Error in parsing User")
 		}
 
-		return &Middleman{hub: hub, conn: conn, send: make(chan []byte, 256), userId: u.UserId}, nil
+		return &Middleman{hub: hub, conn: conn, send: make(chan []byte, 256), user: &u}, nil
 	}
 }
 

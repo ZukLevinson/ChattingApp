@@ -11,6 +11,9 @@ import (
 	"net/http"
 )
 
+/*
+Group represents the group model in the database
+*/
 type Group struct {
 	GroupId          int `json:"groupId"`
 	GroupName        string `json:"groupName"`
@@ -19,6 +22,17 @@ type Group struct {
 	Users *[]UserInGroup `json:"users,omitempty"`
 }
 
+/*
+User represents the user model in the database
+*/
+type User struct {
+	UserId int `json:"userId"`
+}
+
+/*
+UserInGroup represents the users that are associated with group in the database.
+Each UserInGroup includes the RoleId which represents the role of the user inside the group - also an database model.
+*/
 type UserInGroup struct {
 	UserId          int `json:"userId"`
 	GroupId          int `json:"groupId"`
@@ -27,6 +41,7 @@ type UserInGroup struct {
 
 const api = "http://localhost:5000"
 
+// Gets the group with the groupId in the database, and creates an structure of it
 func createGroupInstance(groupId int) (*Group, error) {
 	resp, err := http.Get(api + "/groups/" + strconv.Itoa(groupId))
 
@@ -54,7 +69,7 @@ func createGroupInstance(groupId int) (*Group, error) {
 	return &group, nil
 }
 
-func (group *Group) getGroupUsers() (*[]UserInGroup, error) {
+func (group *Group) getUsersInGroup() (*[]UserInGroup, error) {
 	resp, err := http.Get(api + "/groups/" + strconv.Itoa(group.GroupId) + "/users")
 
 	if err != nil {
