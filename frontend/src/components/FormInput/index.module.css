@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  align-items: center;
+  height: 3em;
+  padding: var(--main-padding);
+  color: var(--primary-text-color);
+}
+
+.label {
+  flex: 1;
+  margin-left: 1em;
+}
+
+.input-container {
+  flex: 3;
+}
+
+.input-box {
+    width: 80%;
+}

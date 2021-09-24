@@ -3,6 +3,7 @@
 :root {
   --card-margin: 1.5em;
   --card-padding: 1em;
+  --main-padding: 1em;
 }
 
 [data-theme="dark"] {
@@ -11,8 +12,41 @@
   --active-background: #1a212c;
   --secondary-active-background: #19202b;
   --primary-text-color: #c9d1d9;
+  --hover-color: #3d4858;
+  --hover-text-color: #0080ff;
   --card-border: #30363d;
   --online-color: rgb(7, 107, 24);
+  --offline-color: rgb(91, 88, 94);
+  --in-chat-color: rgb(129, 6, 6);
+  --button-color: #30363f;
+  --text-color: #fff;
+}
+
+[data-theme="purple"] {
+  --primary-background: #000000;
+  --secondary-background: #150050;
+  --active-background: #3f0071;
+  --secondary-active-background: #610094;
+  --primary-text-color: #c9d1d9;
+  --hover-color: #3d4858;
+  --hover-text-color: #1a5896;
+  --card-border: #30363d;
+  --online-color: rgb(7, 107, 24);
+  --offline-color: rgb(91, 88, 94);
+  --in-chat-color: rgb(129, 6, 6);
+  --button-color: #30363f;
+}
+
+[data-theme="light"] {
+  --primary-background: #f4f9f9;
+  --secondary-background: #ccf2f4;
+  --active-background: #a4ebf3;
+  --secondary-active-background: #aaaaaa;
+  --primary-text-color: #000000;
+  --hover-color: #aaaaaa;
+  --hover-text-color: #0c4279;
+  --card-border: #30363d;
+  --online-color: rgb(7, 110, 24);
   --offline-color: rgb(91, 88, 94);
   --in-chat-color: rgb(129, 6, 6);
   --button-color: #30363f;
@@ -22,6 +56,7 @@
 html,
 body,
 #root {
+  display: flex;
   margin: 0;
   font-family: "Source Sans Pro", sans-serif;
   -webkit-font-smoothing: antialiased;

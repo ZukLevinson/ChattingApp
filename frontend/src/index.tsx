@@ -1,25 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Dashboard from "./features/dashboard";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import { Provider } from "react-redux";
+import { store } from "./state/store";
+import App from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <Switch>
-        {/* <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/users">
-          <Users />
-        </Route> */}
-        <Route path="/">
-          <Dashboard />
-        </Route>
-      </Switch>
-    </Router>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

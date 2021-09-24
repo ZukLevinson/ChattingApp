@@ -16,11 +16,12 @@
 }
 
 .container:hover {
-  background-color: #3d4858;
+  background-color: var(--hover-color);
   cursor: pointer;
 }
 
 .text {
+  text-decoration: none;
   flex: 1;
   text-align: left;
   display: flex;
@@ -39,4 +40,3 @@
 .icon > svg {
   fill: var(--primary-text-color);
 }
-

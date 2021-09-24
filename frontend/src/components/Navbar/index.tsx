@@ -11,12 +11,30 @@ import { w3cwebsocket as W3CWebsocket } from "websocket";
 import { useEffect, useState } from "react";
 import UserStatusUpdate from "../UserStatusUpdate";
 import { Status } from "../UserProfileBadge";
+import PaletteIcon from "@mui/icons-material/Palette";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../state/index";
+
+const createOnlineStatusUpdate = (id: string, remove: any) => {
+  const timer = setTimeout(remove, 1000);
+  return <UserStatusUpdate username={id} status={Status.online} />;
+};
+
+const createOfflineStatusUpdate = (id: string, remove: any) => {
+  const timer = setTimeout(remove, 1000);
+  return <UserStatusUpdate username={id} status={Status.offline} />;
+};
 
 const client = new W3CWebsocket(
   `ws://${process.env.REACT_APP_HOST}:8080/statuses`
 );
 
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const { changeTheme } = bindActionCreators(actionCreators, dispatch);
+  const state = useSelector((state: any) => state);
+
   let [uniqueId, setUniqueId] = useState("" + Date.now());
   let [statuses, setStatuses] = useState([] as JSX.Element[]);
 
@@ -64,10 +82,10 @@ export default function Navbar() {
         <div className={styles.logo}>
           <AppLogo />
         </div>
-        <NavbarButton title="Chats" icon={ForumIcon} />
-        <NavbarButton title="Contacts" icon={ContactsIcon} />
-        <NavbarButton title="Account" icon={AccountCircleIcon} />
-        <NavbarButton title="Settings" icon={SettingsIcon} />
+        <NavbarButton title="Dashboard" to="/dashboard" icon={ContactsIcon} />
+        <NavbarButton title="Chats" to="/chats" icon={ForumIcon} />
+        <NavbarButton title="Account" to="/login" icon={AccountCircleIcon} />
+        <NavbarButton title="Settings" to="/settings" icon={SettingsIcon} />
       </div>
       <div
         className={styles["buttons-container"] + " " + styles.statuses}
@@ -76,19 +94,16 @@ export default function Navbar() {
         {statuses}
       </div>
       <div className={styles["buttons-container"]}>
-        <NavbarButton title="Help" icon={ContactSupportIcon} />
-        <NavbarButton title="Sign Out" icon={LogoutIcon} />
+        <div
+          className={styles["buttons-container"]}
+          onClick={() => changeTheme(state.theme)}
+        >
+          <NavbarButton title="Theme" to="/chats" icon={PaletteIcon} />
+        </div>
+
+        <NavbarButton title="Help" to="/chats" icon={ContactSupportIcon} />
+        <NavbarButton title="Sign Out" to="/chats" icon={LogoutIcon} />
       </div>
     </div>
   );
 }
-
-const createOnlineStatusUpdate = (id: string, remove: any) => {
-  const timer = setTimeout(remove, 1000);
-  return <UserStatusUpdate username={id} status={Status.online} />;
-};
-
-const createOfflineStatusUpdate = (id: string, remove: any) => {
-  const timer = setTimeout(remove, 1000);
-  return <UserStatusUpdate username={id} status={Status.offline} />;
-};

@@ -15,7 +15,7 @@ const tempOnlineUsers: UserProfileBadgeProps[] = [
     status: Status.online,
   },
   {
-    username: "zuk",
+    username: "BIG CHUNGUS",
     status: Status.inChat,
   },
   {
@@ -88,8 +88,8 @@ export default function Chat(props: Props) {
               <span>Reacently Active</span>
             </div>
             <div className={styles.users}>
-              {tempOnlineUsers.map((user) => (
-                <UserProfileBadge {...user} />
+              {tempOnlineUsers.map((user, key) => (
+                <UserProfileBadge {...user} key={key} />
               ))}
             </div>
           </div>
@@ -98,8 +98,8 @@ export default function Chat(props: Props) {
               <span>Others</span>
             </div>
             <div className={styles.users}>
-              {tempOfflineUsers.map((user) => (
-                <UserProfileBadge {...user} />
+              {tempOfflineUsers.map((user, key) => (
+                <UserProfileBadge {...user} key={key} />
               ))}
             </div>
           </div>
