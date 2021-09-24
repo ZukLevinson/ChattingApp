@@ -2,92 +2,104 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 )
 
 // The hub maintains the different channels while keeping records of the middlemans
 type Hub struct {
-	name         string              // Hub name
-	middlemans   map[*Middleman]bool // Registered middlemans
-	broadcast    chan []byte         // Messages from  middlemans
-	register     chan *Middleman     // Register requests from middlemans
-	unregister   chan *Middleman     // Unregister requests from middlemans
-	allowedUsers map[string]*Middleman
+	name       string              // Hub name
+	middlemans map[*Middleman]bool // Map defining active middlemans in the hub
+	broadcast  chan []byte         // Channel for broadcasting messages at the hub (incoming messages)
+	register   chan *Middleman     // Channel for incoming registered middleman's requests
+	unregister chan *Middleman     // Channel for incoming unregistered middleman's requests
+	group      *Group              // The group that the hub represents
 }
 
-func (h *Hub) listAllowedUsers() []string {
-	keys := make([]string, 0, len(h.allowedUsers))
+// Lists all the allowed usersId(s) in the hub
+func (h *Hub) listAllowedUsers() ([]int, error) {
+	allowedUsersInGroup, err := h.group.getUsersInGroup()
 
-	for k := range h.allowedUsers {
-		keys = append(keys, k)
+	if err != nil {
+		log.Printf("Cannot list allowed users in group %d - %v", h.group.GroupId, err)
+		return nil, errors.New("cannot list allowed users in group")
 	}
 
-	return keys
+	keys := make([]int, 0, len(*allowedUsersInGroup))
+
+	for _, val := range *allowedUsersInGroup {
+		keys = append(keys, val.UserId)
+	}
+
+	return keys, nil
 }
 
-func (h *Hub) checkIfInAllowedUsers(userId string) bool {
-	allowedUsersList := h.listAllowedUsers()
+func (h *Hub) checkIfInAllowedUsers(userId int) (bool, error) {
+	allowedUsersList, err := h.listAllowedUsers()
+
+	if err != nil {
+		return false, err
+	}
 
 	for _, val := range allowedUsersList {
 		log.Println("Checking user - ", val)
 		if val == userId {
-			log.Println("User", val, "is valid!")
-			return true
+			log.Printf("User %v is valid", userId)
+
+			return true, nil
 		}
 	}
 
-	return false
+	return false, nil
 }
 
+// Checks whether middleman is allowed to access the hub, and if so - registering it
 func (h *Hub) registerMiddleman(middleman *Middleman) error {
-	if h.checkIfInAllowedUsers(middleman.userId) {
+	res, err := h.checkIfInAllowedUsers(middleman.user.UserId)
+
+	if res {
 		h.register <- middleman
 		log.Println("Registered middleman to Hub with the name - ", h.name)
 
 		return nil
 	} else {
-		log.Println("Middleman not allowed!")
+		if err != nil {
+			apiErrorMessage := fmt.Sprintf("Could not register middleman - %v", err)
+			return errors.New(apiErrorMessage)
+		} else {
+			forbiddenUserErrorMessage := fmt.Sprintf("Middleman with userId %v not allowed!", middleman.user.UserId)
+			return errors.New(forbiddenUserErrorMessage)
+		}
 
-		return errors.New("UserId not allowed")
 	}
 }
 
 // Creates new Hub
-func createHub(name string, allowedUsersList []string) *Hub {
-	// Create allowed users map (while middleman is STILL UNKNOWN!)
-	allowedUsers := make(map[string]*Middleman)
-	for _, val := range allowedUsersList {
-		allowedUsers[val] = nil
+func createHub(groupId int) (*Hub, error) {
+	group, err := createGroupInstance(groupId)
+
+	if err != nil {
+		return nil, errors.New(err.Error())
 	}
 
-	// Returns the pointer of the new Hub
 	return &Hub{
-		name:         name,
-		broadcast:    make(chan []byte),
-		register:     make(chan *Middleman),
-		unregister:   make(chan *Middleman),
-		middlemans:   make(map[*Middleman]bool),
-		allowedUsers: allowedUsers,
-	}
+		broadcast:  make(chan []byte),
+		register:   make(chan *Middleman),
+		unregister: make(chan *Middleman),
+		middlemans: make(map[*Middleman]bool),
+		group:      group,
+	}, nil
 }
 
-func (h *Hub) updateUsers(currentlyAllowedUsers []string) {
-	for _, userId := range currentlyAllowedUsers {
-		if !h.checkIfInAllowedUsers(userId) {
-			h.allowedUsers[userId] = nil
-		}
-	}
-}
-
-func (h *Hub) runHub() {
+func (h *Hub) initiateHub() {
 	for {
 		select {
-		// Incoming registered middleman
+		// Incoming middleman to register
 		case middleman := <-h.register:
 			log.Println("Incoming registered middleman")
 			h.middlemans[middleman] = true
 
-		// Incoming unregistered middleman
+		// Incoming middleman to unregister
 		case middleman := <-h.unregister:
 			if _, ok := h.middlemans[middleman]; ok {
 				log.Println("Incoming unregistered middleman")
@@ -99,9 +111,9 @@ func (h *Hub) runHub() {
 			// Loops through all the middlemans
 			for middleman := range h.middlemans {
 				select {
-				case middleman.send <- message: // If the middleman's channel is active, insert the message
-					log.Println("Spreaded the message '", message, "'")
-				default:
+				case middleman.send <- message: // If the middleman's channel is active, send the message
+					log.Printf("Spreaded the message %v", message)
+				default: // If could not send the message, validate the unregistration process
 					middleman.unregister(h)
 				}
 			}

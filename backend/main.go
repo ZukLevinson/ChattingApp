@@ -16,18 +16,24 @@ func serveAPI(w http.ResponseWriter, r *http.Request, hub *Hub) {
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		log.Printf("Error creating middleman - %v", err)
 	} else {
-		log.Println("Created middleman with userId of - ", middleman.userId)
-		registrationErr := middleman.hub.registerMiddleman(middleman)
+		log.Printf("Created middleman with userId of - %v", middleman.user.UserId)
 
-		if registrationErr != nil {
-			closeMessage := websocket.FormatCloseMessage(websocket.CloseNormalClosure, registrationErr.Error())
+		registrationError := middleman.hub.registerMiddleman(middleman)
+
+		if registrationError != nil {
+			log.Println(registrationError.Error())
+
+			closeMessage := websocket.FormatCloseMessage(websocket.CloseNormalClosure, registrationError.Error())
 
 			middleman.conn.WriteMessage(websocket.CloseMessage, closeMessage)
 			middleman.conn.Close()
 
-			log.Println(registrationErr.Error())
+			log.Println(registrationError.Error())
 		} else {
+			log.Println("Successfuly initiated connection, now active")
+
 			go middleman.writingFromTheHubToWS()
 			go middleman.readingFromWSToHub()
 		}
@@ -37,11 +43,7 @@ func serveAPI(w http.ResponseWriter, r *http.Request, hub *Hub) {
 func main() {
 	flag.Parse()
 
-	groupHubs := make(map[int]*Hub)
-
-	statusHub := createHub("Status", []string{"1"})
-
-	go statusHub.runHub()
+	groupper := createHubber()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request from ", r.URL.Path)
@@ -53,42 +55,37 @@ func main() {
 			groupId, err := strconv.Atoi(queryMap.Get("groupId"))
 
 			if err != nil { // Emit http error since no group with groupId was found
+				errMessage := "Group id must be an integer"
 				w.WriteHeader(http.StatusInternalServerError)
-				w.Write([]byte("Unknown group id!"))
+				w.Write([]byte(errMessage))
 
-				log.Panicln("Uknown groupId - " + queryMap.Get("groupId"))
+				log.Panicln(errMessage + " - " + queryMap.Get("groupId"))
 			} else {
-				group, err := createGroupInstance(groupId)
+				relevantHub := groupper.getHub(groupId)
 
-				if err != nil { // Emit http error since no group with groupId was found
-					w.WriteHeader(http.StatusInternalServerError)
-					w.Write([]byte("Cannot fetch group data!"))
+				if relevantHub == nil {
+					newHub, err := createHub(groupId)
 
-					panic("Cannot fetch group data")
-				}
-				group.getGroupUsers()
+					if err != nil {
+						log.Println(err)
+						w.WriteHeader(http.StatusInternalServerError)
+						w.Write([]byte(err.Error()))
+					} else {
+						groupper.recordNewHub(groupId, newHub)
+						log.Printf("Created Hub - %v", groupId)
 
-				allowedUsersIds := []string{}
+						relevantHub = groupper.getHub(groupId)
 
-				for _, userInGroup := range *group.Users {
-					allowedUsersIds = append(allowedUsersIds, strconv.Itoa(userInGroup.UserId))
-				}
-
-				if groupHubs[groupId] == nil {
-					groupHubs[groupId] = createHub(queryMap.Get("groupId"), allowedUsersIds)
-					log.Println("Created Hub - ", groupHubs[groupId], ", Group - ", group, ", Allowed Users - ", allowedUsersIds)
+						go relevantHub.initiateHub() // Initiate hub
+						serveAPI(w, r, relevantHub)
+					}
 				} else {
-					groupHubs[groupId].updateUsers(allowedUsersIds)
+					serveAPI(w, r, relevantHub)
 				}
-
-				go groupHubs[groupId].runHub()
-				serveAPI(w, r, groupHubs[groupId])
 			}
-		case "/statuses":
-			serveAPI(w, r, statusHub)
 		default:
 			log.Panic("No available routes")
-			w.WriteHeader(404)
+			w.WriteHeader(http.StatusNotFound)
 		}
 	})
 
